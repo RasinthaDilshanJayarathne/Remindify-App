@@ -21,18 +21,28 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Map;
 import java.util.function.Function;
 
 @Service
 public class JWTServiceImpl implements JWTService {
 
-    @Autowired
-    private Environment environment;
+//    @Value("siginKey")
+//    private String siginKey;
+
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder().setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-                .signWith(getSiginKey(), SignatureAlgorithm.ES256)
+                .signWith(getSiginKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 604800000))
+                .signWith(getSiginKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -46,8 +56,10 @@ public class JWTServiceImpl implements JWTService {
     }
 
     private Key getSiginKey() {
-        byte[] key = Decoders.BASE64.decode(environment.getProperty("siginKey"));
-        return Keys.hmacShaKeyFor(key);
+//        byte[] key = Decoders.BASE64.decode(siginKey);
+//        return Keys.hmacShaKeyFor(key);
+
+        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
     private Claims extractAllClaims(String token) {

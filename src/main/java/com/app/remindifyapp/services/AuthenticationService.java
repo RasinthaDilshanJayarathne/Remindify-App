@@ -7,10 +7,14 @@
 
 package com.app.remindifyapp.services;
 
+import com.app.remindifyapp.dto.JwtAuthenticationResponse;
+import com.app.remindifyapp.dto.SignInRequest;
 import com.app.remindifyapp.dto.SignUpRequest;
 import com.app.remindifyapp.entities.User;
 
 public interface AuthenticationService {
 
     User signup(SignUpRequest signUpRequest);
+
+    JwtAuthenticationResponse signin(SignInRequest signInRequest);
 }

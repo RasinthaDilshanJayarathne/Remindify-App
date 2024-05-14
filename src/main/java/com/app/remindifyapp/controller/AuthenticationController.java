@@ -7,6 +7,8 @@
 
 package com.app.remindifyapp.controller;
 
+import com.app.remindifyapp.dto.JwtAuthenticationResponse;
+import com.app.remindifyapp.dto.SignInRequest;
 import com.app.remindifyapp.dto.SignUpRequest;
 import com.app.remindifyapp.entities.User;
 import com.app.remindifyapp.services.AuthenticationService;
@@ -27,5 +29,10 @@ public class AuthenticationController {
     @PostMapping("/signup")
     public ResponseEntity<User> signup(@RequestBody SignUpRequest signUpRequest) {
         return ResponseEntity.ok(authenticationService.signup(signUpRequest));
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<JwtAuthenticationResponse> signin (@RequestBody SignInRequest signInRequest) {
+        return ResponseEntity.ok(authenticationService.signin(signInRequest));
     }
 }
