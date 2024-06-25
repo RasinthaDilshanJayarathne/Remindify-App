@@ -1,10 +1,10 @@
-package com.app.remindifyapp;
+package com.remindifyapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RemindifyappApplicationTests {
+class SpringsecurityApplicationTests {
 
 	@Test
 	void contextLoads() {
