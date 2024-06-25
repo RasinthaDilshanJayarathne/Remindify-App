@@ -6,6 +6,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Data
 @Builder
 @Document("user")
@@ -15,5 +17,6 @@ public class AuthUser {
     @Indexed
     private String username;
     private String password;
+    private Date birthday;
     private boolean active;
 }

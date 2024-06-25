@@ -2,32 +2,31 @@ package com.remindifyapp.service;
 
 import com.remindifyapp.entity.AuthUser;
 import com.remindifyapp.repository.AuthUserRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.Collections;
 
 @Service
-@AllArgsConstructor
 public class AuthUserDetailsService implements UserDetailsService {
 
-    private final AuthUserRepository userRepository;
+    private final AuthUserRepository authUserRepository;
+
+    public AuthUserDetailsService(AuthUserRepository authUserRepository) {
+        this.authUserRepository = authUserRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<AuthUser> authUser = userRepository.findByUsername(username.toLowerCase());
-        if (!authUser.isPresent()) {
-            throw new UsernameNotFoundException(username);
-        } else {
-            return User.builder()
-                    .username(authUser.get().getUsername())
-                    .password(authUser.get().getPassword())
-                    .disabled(!authUser.get().isActive())
-                    .build();
-        }
+        AuthUser authUser = authUserRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        return new User(authUser.getUsername(), authUser.getPassword(),
+                authUser.isActive(), true, true, true,
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
     }
 }
