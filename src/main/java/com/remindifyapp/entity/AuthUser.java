@@ -12,11 +12,12 @@ import java.util.Date;
 @Builder
 @Document("user")
 public class AuthUser {
+
     @Id
-    private String id;
-    @Indexed
     private String username;
+    private String email;
     private String password;
     private Date birthday;
+    private String image;
     private boolean active;
 }
