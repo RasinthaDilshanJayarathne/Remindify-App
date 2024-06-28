@@ -1,21 +1,16 @@
 package com.remindifyapp.controller;
 
 import com.remindifyapp.bean.ResponseDTO;
-import com.remindifyapp.util.ImageUtils;
 import com.remindifyapp.bean.UserDTO;
 import com.remindifyapp.entity.AuthUser;
 import com.remindifyapp.repository.AuthUserRepository;
-import org.springframework.beans.factory.annotation.Value;
+import com.remindifyapp.util.ImageUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Optional;
 
@@ -27,9 +22,6 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     private ResponseDTO responseDTO;
-
-    @Value("${file.upload-dir}")
-    private String uploadDir;
 
     public UserController(AuthUserRepository authUserRepository, PasswordEncoder passwordEncoder) {
         this.authUserRepository = authUserRepository;
